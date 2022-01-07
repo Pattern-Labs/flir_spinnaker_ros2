@@ -26,6 +26,10 @@ namespace flir_spinnaker_ros2
     SS << __VA_ARGS__;                   \
     throw(std::runtime_error(SS.str())); \
   }
+#define LOG_DEBUG(...)                              \
+  {                                                \
+    RCLCPP_DEBUG_STREAM(get_logger(), __VA_ARGS__); \
+  }
 #define LOG_INFO(...)                              \
   {                                                \
     RCLCPP_INFO_STREAM(get_logger(), __VA_ARGS__); \

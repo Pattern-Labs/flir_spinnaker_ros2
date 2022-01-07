@@ -6,11 +6,11 @@ from ament_index_python.packages import get_package_share_directory
 
 camera_params = {
     'debug': False,
-    'compute_brightness': False,
+    'compute_brightness': True,
     'dump_node_map': False,
     # set parameters defined in grasshopper.cfg    
-    'gain_auto': 'Continous',
-    'exposure_auto': 'Continuous',
+    'gain_auto': 'Off',
+    'exposure_auto': 'Off',
     'always_publish': True,
     'frame_rate_auto': 'Off',
     'frame_rate': 20.0,

@@ -345,11 +345,9 @@ rcl_interfaces::msg::SetParametersResult CameraDriver::parameterChanged(
 void CameraDriver::controlCallback(
   const camera_control_msgs_ros2::msg::CameraControl::UniquePtr msg)
 {
-  /*
-  LOG_INFO(
-    "control msg: time: " << currentExposureTime_ << " -> "
+  LOG_DEBUG("control msg: time: " << currentExposureTime_ << " -> "
                           << msg->exposure_time << " gain: " << currentGain_
-                          << " -> " << msg->gain); */
+                          << " -> " << msg->gain); 
   const uint32_t et = msg->exposure_time;
   const float gain = msg->gain;
   bool logTime(false);
@@ -382,10 +380,10 @@ void CameraDriver::controlCallback(
   }
 
   if (logTime) {
-    LOG_INFO("changed exposure time to " << et << "us");
+    LOG_DEBUG("changed exposure time to " << et << "us");
   }
   if (logGain) {
-    LOG_INFO("changed gain to " << gain << "db");
+    LOG_DEBUG("changed gain to " << gain << "db");
   }
 }
 

@@ -71,6 +71,34 @@ install(TARGETS
   DESTINATION lib
 )
 
+ament_auto_add_library(camera_autoexposure SHARED
+  src/camera_autoexposure.cpp
+)
+
+ament_auto_add_executable(camera_autoexposure_node
+  src/camera_autoexposure_node.cpp
+)
+
+rclcpp_components_register_nodes(camera_autoexposure "flir_spinnaker_ros2::CameraAutoExposure")
+
+target_include_directories(camera_autoexposure PRIVATE include)
+
+# the node must go into the project specific lib directory or else
+# the launch file will not find it
+
+install(TARGETS
+  camera_autoexposure_node
+  DESTINATION lib/${PROJECT_NAME}/
+  )
+
+# the shared library goes into the global lib dir so it can
+# be used as a composable node by other projects
+
+install(TARGETS
+  camera_autoexposure
+  DESTINATION lib
+)
+
 install(DIRECTORY
   config
   DESTINATION share/${PROJECT_NAME}/
