@@ -230,7 +230,7 @@ void CameraDriver::createCameraParameters()
 
 bool CameraDriver::setEnum(const std::string & nodeName, const std::string & v)
 {
-  LOG_INFO("setting " << nodeName << " to: " << v);
+  LOG_DEBUG("setting " << nodeName << " to: " << v);
   std::string retV;  // what actually was set
   std::string msg = driver_->setEnum(nodeName, v, &retV);
   bool status(true);
@@ -247,7 +247,7 @@ bool CameraDriver::setEnum(const std::string & nodeName, const std::string & v)
 
 bool CameraDriver::setDouble(const std::string & nodeName, double v)
 {
-  LOG_INFO("setting " << nodeName << " to: " << v);
+  LOG_DEBUG("setting " << nodeName << " to: " << v);
   double retV;  // what actually was set
   std::string msg = driver_->setDouble(nodeName, v, &retV);
   bool status(true);
@@ -264,7 +264,7 @@ bool CameraDriver::setDouble(const std::string & nodeName, double v)
 
 bool CameraDriver::setBool(const std::string & nodeName, bool v)
 {
-  LOG_INFO("setting " << nodeName << " to: " << v);
+  LOG_DEBUG("setting " << nodeName << " to: " << v);
   bool retV;  // what actually was set
   std::string msg = driver_->setBool(nodeName, v, &retV);
   bool status(true);
