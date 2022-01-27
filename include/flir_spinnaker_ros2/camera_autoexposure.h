@@ -35,17 +35,10 @@ private:
 
   void run();  // thread
 
-  // void imageCallback(
-  //   const sensor_msgs::msg::Image::ConstSharedPtr msg);
   void metaCallback(const image_meta_msgs_ros2::msg::ImageMetaData::ConstSharedPtr msg);
-
-  // rcl_interfaces::msg::SetParametersResult parameterChanged(
-  //   const std::vector<rclcpp::Parameter> & params);
 
   // ----- variables --
   std::shared_ptr<rclcpp::Node> node_;
-  // rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr
-  //   image_sub_;
   rclcpp::Subscription<image_meta_msgs_ros2::msg::ImageMetaData>::SharedPtr
     camera_meta_sub_;
   rclcpp::Publisher<camera_control_msgs_ros2::msg::CameraControl>::SharedPtr
@@ -67,15 +60,11 @@ private:
   // Bias on the IIR, range is 0.-1. where 1.0 would immediately replace the accum with the current value (ie no filtering).
   double intensity_update_gain_ = 1.0;
 
-  // sensor_msgs::msg::Image::ConstSharedPtr imageMsg_;
   image_meta_msgs_ros2::msg::ImageMetaData::ConstSharedPtr metaMsg_;
 
-  // rclcpp::Node::OnSetParametersCallbackHandle::SharedPtr
-  //   callbackHandle_;  
   bool exposure_running_{false};
   std::shared_ptr<std::thread> thread_;
   bool should_run_{true};
-  // std::vector<std::string> parameterList_;  // remember original ordering
   int qosDepth_{4};
 };
 }  // namespace flir_spinnaker_ros2

@@ -46,8 +46,6 @@ CameraAutoExposure::CameraAutoExposure(const rclcpp::NodeOptions& options)
   get_parameter("target_intensity", target_intensity_);
   declare_parameter("intensity_update_gain", 0.5);
   get_parameter("intensity_update_gain", intensity_update_gain_);
-  // image_sub_ = create_subscription<sensor_msgs::msg::Image>(
-  //     "/" + camera_name_ + "/image_raw", 1, std::bind(&CameraAutoExposure::imageCallback, this, std::placeholders::_1));
   camera_meta_sub_ = create_subscription<image_meta_msgs_ros2::msg::ImageMetaData>(
       "/" + camera_name_ + "/meta", qosDepth_, std::bind(&CameraAutoExposure::metaCallback, this, std::placeholders::_1));
   control_pub_ = 
@@ -102,12 +100,11 @@ void CameraAutoExposure::metaCallback(
     camera_control_msg.exposure_time = max_exposure_time;
   }
 
-  static int skip_count = 20;
-  if (--skip_count == 0) {
-    RCLCPP_DEBUG_STREAM(get_logger(), "Received message with brightness " << msg->brightness << " exposure " << msg->exposure_time << " gain " << msg->gain << " gives filtered intensity " << filtered_intensity);
-    RCLCPP_DEBUG_STREAM(get_logger(), "Setting exposure to " << camera_control_msg.exposure_time << " gain to " << camera_control_msg.gain);
-    skip_count = 20;
-  }
+  RCLCPP_DEBUG_STREAM(
+    get_logger(), "Computed filtered intensity "
+                    << filtered_intensity << "Setting exposure to "
+                    << camera_control_msg.exposure_time << " gain to "
+                    << camera_control_msg.gain);
   control_pub_->publish(camera_control_msg);
 }
 
