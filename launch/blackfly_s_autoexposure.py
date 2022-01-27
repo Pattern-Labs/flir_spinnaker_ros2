@@ -4,6 +4,9 @@ from launch.actions import DeclareLaunchArgument as LaunchArg
 from launch import LaunchDescription
 from ament_index_python.packages import get_package_share_directory
 
+from launch_ros.actions import ComposableNodeContainer
+from launch_ros.descriptions import ComposableNode
+
 camera_params = {
     'debug': False,
     'compute_brightness': True,
@@ -28,7 +31,7 @@ camera_params = {
     }
 
 def generate_launch_description():
-    """launch grasshopper camera node."""
+    """Generate launch description with multiple components."""
     flir_dir = get_package_share_directory('flir_spinnaker_ros2')
     config_dir = flir_dir + '/config/'
     name_arg = LaunchArg('camera_name', default_value='blackfly_s',
@@ -36,14 +39,27 @@ def generate_launch_description():
     serial_arg = LaunchArg('serial', default_value="'20435008'",
                          description='serial number')
     print([LaunchConfig('serial'),'_'])
-    node = Node(package='flir_spinnaker_ros2',
-                executable='camera_driver_node',
-                output='screen',
-                name=[LaunchConfig('camera_name')],
-                parameters=[camera_params,
-                        {'parameter_file': config_dir + 'blackfly_s.cfg',
-                         'serial_number': [LaunchConfig('serial')],
-                        }],
-                remappings=[('~/control', '/exposure_control/control'),],
+    container = ComposableNodeContainer(
+            name='blackfly_s_container',
+            namespace='',
+            package='rclcpp_components',
+            executable='component_container',
+            composable_node_descriptions=[
+                ComposableNode(
+                        package='flir_spinnaker_ros2',
+                        plugin='flir_spinnaker_ros2::CameraDriver',
+                        name=[LaunchConfig('camera_name')],
+                        parameters=[camera_params,
+                                    {'parameter_file': config_dir + 'blackfly_s.cfg',
+                                    'serial_number': [LaunchConfig('serial')],
+                                    }],
+                        remappings=[('~/control', '/exposure_control/control'), ]),
+                ComposableNode(
+                        package='flir_spinnaker_ros2',
+                        plugin='flir_spinnaker_ros2::CameraAutoExposure',
+                        name=['blackfly_s_autoexposure'])
+            ],
+            output='screen',
     )
-    return LaunchDescription([name_arg, serial_arg, node])
+
+    return LaunchDescription([name_arg, serial_arg, container])
