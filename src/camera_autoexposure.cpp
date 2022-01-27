@@ -60,6 +60,7 @@ void CameraAutoExposure::metaCallback(
   const image_meta_msgs_ros2::msg::ImageMetaData::ConstSharedPtr msg) {
   if (msg->brightness == -1) {
     RCLCPP_WARN(get_logger(), "Brightness is disabled, not running exposure control.");
+    return;
   }
 
   // Filter the intensity with a single pole IIR based on the coef configured.
