@@ -53,7 +53,7 @@ def generate_launch_description():
                                     {'parameter_file': config_dir + 'blackfly_s.cfg',
                                     'serial_number': [LaunchConfig('serial')],
                                     }],
-                        remappings=[('~/control', '/exposure_control/control'), ]),
+                        remappings=[('~/control', '/blackfly_s/control'), ]),
                 ComposableNode(
                         package='flir_spinnaker_ros2',
                         plugin='flir_spinnaker_ros2::CameraAutoExposure',
